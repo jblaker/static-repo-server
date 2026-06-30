@@ -1,0 +1,20 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8081:80"
+    environment:
+      # SSH clone URL of your private repo
+      REPO_URL: "git@github.com:youruser/yourrepo.git"
+      # Branch to clone and pull (defaults to main)
+      REPO_BRANCH: "main"
+      # Optional: serve only a subdirectory of the repo
+      # REPO_SUBDIR: "public"
+    volumes:
+      # SSH key for GitHub access — mount your private key read-only
+      - ~/.ssh/id_ed25519:/root/.ssh/id_ed25519:ro
+      # Users file — edit this on the host, never rebuild to change users
+      - ./data/users.txt:/data/users.txt:ro
+      # Persist refresh log
+      - ./data:/data
+    restart: unless-stopped
